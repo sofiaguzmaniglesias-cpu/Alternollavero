@@ -1,0 +1,290 @@
+/* ===== Paleta y tipografías (mismas que "Píxeles en vivo") ===== */
+:root {
+  --rosa: #b85a8c;
+  --malva: #8c4f92;
+  --morado: #4a3d78;
+  --marino: #2f3466;
+  --blanco: #ffffff;
+  --negro: #111111;
+  --tinta: #2f3466;
+  --tinta-suave: #6d6488;
+  --fondo-suave: #f6f2f8;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  background: var(--blanco);
+  color: var(--negro);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+button:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+
+/* ===== Una pantalla: texto a la izquierda, llavero a la derecha ===== */
+.dato {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* ===== Texto (como el diseño) ===== */
+.columna-texto {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  padding: 9vh 4vw 40px 8.5vw;
+}
+
+/* Forma de píxeles: a todo el ancho, pegada abajo, detrás del texto y del llavero */
+.pixeles {
+  position: absolute;
+  /* Escala y encuadre como en la maqueta (se recorta por la derecha y por abajo) */
+  left: -1.7%;
+  bottom: -19vw;
+  z-index: 0;
+  width: 138%;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  filter: brightness(1.01); /* el fondo de la imagen es gris 254: así pasa a blanco puro y no se ve el borde */
+}
+
+.texto {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-width: 17em;
+  font-weight: 400;
+  font-size: clamp(18px, 1.75vw, 24px);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+
+/* ===== Lienzo con degradado + grano ===== */
+.lienzo {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background: transparent;
+}
+
+.lienzo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  display: none;
+}
+
+model-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --poster-color: transparent;
+  cursor: grab;
+}
+model-viewer:active { cursor: grabbing; }
+
+/* Barra de carga */
+.carga {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160px;
+  height: 2px;
+  transform: translateX(-50%);
+  background: rgba(47, 52, 102, 0.15);
+}
+.carga span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--tinta);
+  transition: width 0.2s ease;
+}
+.carga.oculta { display: none; }
+
+/* Textos y botones sobre el lienzo */
+.pista {
+  position: absolute;
+  z-index: 2;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font: 500 12px var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.controles {
+  position: absolute;
+  z-index: 2;
+  left: 20px;
+  bottom: 20px;
+  display: flex;
+  gap: 6px;
+}
+
+/* Selector de color */
+.colores {
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#btn-blanco {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  left: 20px;
+}
+
+/* ===== Botones cuadrados 1:1, como los píxeles ===== */
+.cuadro {
+  --lado: 48px;
+  width: var(--lado);
+  height: var(--lado);
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  display: grid;
+  place-items: center;
+  background: var(--tinta);
+  color: var(--blanco);
+  font: 400 22px/1 var(--font-display);
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.cuadro:hover { filter: brightness(1.15); }
+.cuadro:active { transform: scale(0.94); }
+.cuadro .icono, .muestra span {
+  display: block;
+  line-height: 1;
+  font-family: "Noto Sans Symbols 2", "Noto Sans Math", "Noto Sans Egyptian Hieroglyphs", var(--font-display);
+}
+#btn-girar .icono { font-size: 15px; letter-spacing: 0.08em; }
+.icono-blanco { font-size: 30px; }
+#btn-blanco { background: #c0693b; } /* naranja del llavero */
+#btn-color .icono { font-size: 40px; }
+
+/* Los 4 colores: cuadrados de su color con 𓇼 */
+.muestras { display: flex; gap: 6px; }
+.muestra { background: var(--c); color: var(--blanco); font-size: 30px; }
+.muestra[aria-pressed="true"] {
+  outline: 3px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+/* Texto solo para lectores de pantalla */
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ===== Cursor personalizado ===== */
+.cursor { display: none; }
+
+.cursor-propio, .cursor-propio * { cursor: none !important; }
+
+.cursor-propio .cursor {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.cursor-propio .cursor.visible { opacity: 1; }
+
+.cursor svg {
+  display: block;
+  /* El punto activo es el centro de la forma */
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.18s ease;
+  filter: drop-shadow(0 3px 6px rgba(47, 52, 102, 0.25));
+}
+.cursor.sobre-boton svg { transform: translate(-50%, -50%) scale(1.35) rotate(-12deg); }
+.cursor.pulsado svg { transform: translate(-50%, -50%) scale(0.85); }
+
+/* Pista: "Arrastra" con ratón, "Desliza" en pantallas táctiles */
+.solo-tactil { display: none; }
+@media (hover: none) {
+  .solo-raton { display: none; }
+  .solo-tactil { display: inline; }
+}
+
+/* ===== Móvil: texto arriba, llavero debajo y botones en fila bajo el llavero ===== */
+@media (max-width: 760px) {
+  .dato {
+    grid-template-columns: 1fr;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .columna-texto { padding: 40px 24px 0; }
+  .texto { font-size: 19px; max-width: 22em; }
+
+  /* La forma de píxeles más grande para que se vea detrás del llavero */
+  .pixeles { width: 240%; left: -45%; bottom: -12vw; }
+
+  .lienzo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 16px 28px;
+  }
+
+  model-viewer {
+    position: relative;
+    inset: auto;
+    order: 1;
+    height: 58vh;
+    height: 58svh;
+    min-height: 340px;
+  }
+
+  .pista {
+    position: static;
+    order: 0;
+    transform: none;
+    margin: 20px 0 0;
+    text-align: center;
+  }
+
+  /* Botones en filas bajo el llavero: colores arriba, controles debajo */
+  .lienzo { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .pista, model-viewer, .colores { width: 100%; }
+  .colores, .controles, #btn-blanco { position: static; }
+  .colores { order: 2; justify-content: center; }
+  .controles { order: 3; }
+  #btn-blanco { order: 4; }
+}

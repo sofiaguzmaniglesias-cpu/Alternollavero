@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALTERNO · El llavero</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <!-- Fuentes solo para los signos de los botones (🢬 ⟣ 𓇼) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&family=Noto+Sans+Math&family=Noto+Sans+Egyptian+Hieroglyphs&text=%F0%9F%A2%AC%E2%9F%A3%F0%93%87%BC%E2%86%BA%E2%9D%9A%E2%96%B6%20&display=block">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- model-viewer (Google) -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+</head>
+<body>
+
+  <main class="dato">
+
+    <!-- Forma de píxeles de fondo, abajo y a todo el ancho -->
+    <img class="pixeles" src="fondo-pixeles.png" alt="" aria-hidden="true">
+
+    <!-- Texto -->
+    <section class="columna-texto">
+      <p class="texto">
+        El llavero se entiende como un elemento esencial para ALTERNO.<br>
+        Con él vas a poder modificar, interactuar, y conectarte con lo digital.<br>
+        Con él, eres parte de las EEASS, con él te identificas, con él creas.
+      </p>
+    </section>
+
+    <!-- Llavero en 3D -->
+    <section class="lienzo">
+      <model-viewer
+        id="llavero"
+        src="llavero.glb"
+        alt="Llavero de ALTERNO en 3D"
+        camera-controls
+        touch-action="pan-y"
+        auto-rotate
+        auto-rotate-delay="0"
+        rotation-per-second="20deg"
+        interaction-prompt="none"
+        camera-orbit="-25deg 78deg 0.3m"
+        camera-target="0m 0m 0m"
+        min-camera-orbit="auto auto 0.12m"
+        max-camera-orbit="auto auto 0.5m"
+        field-of-view="36deg"
+        shadow-intensity="0.8"
+        shadow-softness="1"
+        exposure="1.1"
+        tone-mapping="neutral"
+        environment-image="neutral">
+        <div class="carga" slot="progress-bar"><span id="barra"></span></div>
+      </model-viewer>
+
+      <p class="pista"><span class="solo-raton">Arrastra</span><span class="solo-tactil">Desliza</span> para girar</p>
+
+      <button id="btn-blanco" class="cuadro" type="button" aria-label="Volver a blanco" title="Volver a blanco"><span class="icono icono-blanco" aria-hidden="true">⟣</span></button>
+
+      <div class="controles">
+        <button id="btn-girar" class="cuadro" type="button" aria-pressed="true" aria-label="Pausar giro" title="Pausar giro"><span class="icono" aria-hidden="true">❚❚</span></button>
+        <button id="btn-reset" class="cuadro" type="button" aria-label="Recolocar" title="Recolocar"><span class="icono" aria-hidden="true">↺</span></button>
+      </div>
+
+      <div class="colores" role="group" aria-label="Color del llavero">
+        <button id="btn-color" class="cuadro" type="button" title="Cambiar color"><span class="icono" aria-hidden="true">🢬</span><span class="oculto">Cambiar color. Color actual: <span id="nombre-color">Blanco</span></span></button>
+        <div class="muestras">
+          <button class="muestra cuadro" type="button" data-color="0" style="--c:#c0693b" aria-label="Naranja" aria-pressed="false"><span aria-hidden="true">𓇼</span></button>
+          <button class="muestra cuadro" type="button" data-color="1" style="--c:#c06b9a" aria-label="Rosa" aria-pressed="false"><span aria-hidden="true">𓇼</span></button>
+          <button class="muestra cuadro" type="button" data-color="2" style="--c:#8a5a94" aria-label="Morado" aria-pressed="false"><span aria-hidden="true">𓇼</span></button>
+          <button class="muestra cuadro" type="button" data-color="3" style="--c:#323464" aria-label="Azul" aria-pressed="false"><span aria-hidden="true">𓇼</span></button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Cursor personalizado -->
+  <div class="cursor" aria-hidden="true">
+    <svg viewBox="150 190 402 374" width="40" height="37">
+      <defs>
+        <linearGradient id="grad-cursor" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ec7cb6"/>
+          <stop offset="1" stop-color="#c8559a"/>
+        </linearGradient>
+      </defs>
+      <path d="M157 326 C300 322 400 275 455 198 L545 198 L545 255 C515 280 470 305 468 365 C467 395 478 418 490 436 C510 468 520 505 520 557 L385 557 L385 520 C385 420 300 383 157 381 Z"
+            fill="url(#grad-cursor)" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
